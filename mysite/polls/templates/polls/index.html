@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>COVID-19 | USA</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/index.css' %}">
+</head>
+<body>
+    <div class="left-menu">
+        <div class="title">COVID-19<br>IN THE USA</div>
+        <div id="ct-button" class="button {{ buttons.cases.total }}" onclick="ct()">CASES | TOTAL</div>
+        <div id="ck-button" class="button {{ buttons.cases.100k }}" onclick="ck()">CASES | PER 100K</div>
+        <div id="dt-button" class="button {{ buttons.deaths.total }}" onclick="dt()">DEATHS | TOTAL</div>
+        <div id="dk-button" class="button {{ buttons.deaths.100k }}" onclick="dk()">DEATHS | PER 100K</div>
+        <div id="ab-button" class="button about" onclick="about()">ABOUT</div>
+    </div>
+    <div class="right-zone">
+        <div style="background: #e5fbf2; border-color: #0c4b33; border-style: solid; border-width: 0 0 1px 0; box-sizing: border-box; width: 100%;">
+            <div class="slider-block">
+                <form id="form" method="post">
+                    {% csrf_token %}
+                    <input id="page" type="text" name="page" value="{{ chart.name }}" style="display: none;">
+                    <input id="slider" type="range" name="day" min="1" max="343" value="{{ day }}">
+                </form>
+            </div>
+            <div id="wb-button" class="date-button week-back {{ buttons.days.back.week }}" onclick="weekBack()">WEEK BACK</div>
+            <div id="db-button" class="date-button day-back {{ buttons.days.back.day }}" onclick="dayBack()">DAY BACK</div>
+            <div class="date">{{ date_line }}, 2020</div>
+            <div id="nd-button" class="date-button next-day {{ buttons.days.next.day }}" onclick="nextDay()">NEXT DAY</div>
+            <div id="nw-button" class="date-button next-week {{ buttons.days.next.week }}" onclick="nextWeek()">NEXT WEEK</div>
+        </div>
+        <div class="subtitle-1">{{ chart.title }}</div>
+        <div class="subtitle-2">{{ chart.subtitle }}</div>
+        <div style="overflow-y: scroll; height: calc(100vh - 90px - 75px - 44px - 42px); width: 100%;">
+            {% if file %}
+                <img src="http://127.0.0.1:8000/static/polls/test/{{ chart.name }}_{{ chart.code }}.svg">
+            {% else %}
+                <div class="no-image">{{ error }}</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="{% static 'polls/index.js' %}"></script>
